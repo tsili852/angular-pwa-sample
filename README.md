@@ -3,6 +3,18 @@
 ### Project Description
 The goal of this repo is to provide a starter boilerplate application. The application is PWA enabled with the bellow implementations :
 
+- Application update available / Service worker update available
+All we need to update the application is for a reload of the page. After the reload the new version of the service worker will be applied.
+```ts
+    this.swUpdate.available.subscribe(event => {
+      const snackUdpate = this.snackBar.open('Application update available', 'Reload', { duration: 6000 });
+
+      snackUdpate.onAction().subscribe(() => {
+        window.location.reload();
+      });
+    });
+```
+
 - eventLister for offline/online status
 ```typescript
     window.addEventListener('online', () => {

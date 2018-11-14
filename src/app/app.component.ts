@@ -30,6 +30,14 @@ export class AppComponent {
       this.snackBar.open('Service Workers enabled', 'Ok', { duration: 3000 });
     }
 
+    this.swUpdate.available.subscribe(event => {
+      const snackUdpate = this.snackBar.open('Application update available', 'Reload', { duration: 6000 });
+
+      snackUdpate.onAction().subscribe(() => {
+        window.location.reload();
+      });
+    });
+
     window.addEventListener('beforeinstallprompt', event => {
       event.preventDefault();
 
