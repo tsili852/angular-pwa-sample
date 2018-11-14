@@ -6,46 +6,46 @@ The goal of this repo is to provide a starter boilerplate application. The appli
 - Application update available / Service worker update available
 All we need to update the application is for a reload of the page. After the reload the new version of the service worker will be applied.
 ```ts
-    this.swUpdate.available.subscribe(event => {
-      const snackUdpate = this.snackBar.open('Application update available', 'Reload', { duration: 6000 });
+this.swUpdate.available.subscribe(event => {
+  const snackUdpate = this.snackBar.open('Application update available', 'Reload', { duration: 6000 });
 
-      snackUdpate.onAction().subscribe(() => {
-        window.location.reload();
-      });
-    });
+  snackUdpate.onAction().subscribe(() => {
+    window.location.reload();
+  });
+});
 ```
 
 - eventLister for offline/online status
 ```typescript
-    window.addEventListener('online', () => {
-      noInternetSnack.dismiss();
-    });
+window.addEventListener('online', () => {
+  noInternetSnack.dismiss();
+});
 
-    window.addEventListener('offline', () => {
-      noInternetSnack = this.snackBar.open('No Internet connection', 'Ok');
-    });
+window.addEventListener('offline', () => {
+  noInternetSnack = this.snackBar.open('No Internet connection', 'Ok');
+});
 ```
 
 - eventListener for `beforeinstallprompt  
 When we catch the event, we store it in a variable and prevent the default behaviour of the browser (Add to homescreen snackbar). Then, we display our own customized snackbar and catch the user's response. If the user accepts to install the application, we use the stored event to prompt for the browser's dialog. In the end we display the user's choice.
 ```typescript
-    window.addEventListener('beforeinstallprompt', event => {
-      event.preventDefault();
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
 
-      this.promptEvent = event;
-      const snackInstall = this.snackBar.open('Do you want to install the application to your device ?', 'Install', { duration: 3000 });
+  this.promptEvent = event;
+  const snackInstall = this.snackBar.open('Do you want to install the application to your device ?', 'Install', { duration: 3000 });
 
-      snackInstall.onAction().subscribe(() => {
-        this.promptEvent.prompt();
-        this.promptEvent.userChoice.then(choiceResult => {
-          if (choiceResult.outcome === 'accepted') {
-            this.snackBar.open('PWA install accepted', 'Ok', { duration: 3000 });
-          } else {
-            this.snackBar.open('PWA install dismissed', 'Ok', { duration: 3000 });
-          }
-        });
-      });
+  snackInstall.onAction().subscribe(() => {
+    this.promptEvent.prompt();
+    this.promptEvent.userChoice.then(choiceResult => {
+      if (choiceResult.outcome === 'accepted') {
+        this.snackBar.open('PWA install accepted', 'Ok', { duration: 3000 });
+      } else {
+        this.snackBar.open('PWA install dismissed', 'Ok', { duration: 3000 });
+      }
     });
+  });
+});
 ```
 
 ---
